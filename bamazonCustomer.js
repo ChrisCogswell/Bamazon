@@ -38,6 +38,7 @@ var connection = mysql.createConnection({
       });
   }
 
+
   function storeFront() {
             console.log("\nItems for sale\n".underline.blue)
     connection.query("SELECT * FROM products", (err,res) =>{
@@ -45,7 +46,49 @@ var connection = mysql.createConnection({
         // console.log(res);
         res.forEach(element => {
             console.log("   Item ".yellow + element.item_id + ": " + element.product_name)
-            console.log("   Price: ".red + element.price + "\n");
+            console.log("   Price: ".red + " $" + element.price + "\n");
         })
     })
+    inquirer.prompt({
+        name: "BuyorNot",
+        type: "list",
+        message: "Would you like to buy an item?",
+        choices: ["Yes", "No"]
+    }).then(answer => {
+        if (answer.BuyorNot === "Yes"){
+            buyItem();
+        } else {
+            console.log("No Worries, see you next time.")
+            connection.end();
+        }
+    });
   }
+
+function buyItem() {
+    connection.query("SELECT * FROM products", function(err, results) {
+        if (err) throw err;
+        inquirer
+          .prompt([
+            {
+              name: "choice",
+              type: "rawlist",
+              choices: function() {
+                var choiceArray = [];
+                for (var i = 0; i < results.length; i++) {
+                  choiceArray.push(results[i].product_name);
+                }
+                return choiceArray;
+              },
+              message: "Which Item would you like to buy?"
+            },
+            {
+              name: "amount",
+              type: "input",
+              message: "How many would you like to purchase?"
+            }
+          ])
+          .then(answer =>{
+
+          });
+    })
+}
