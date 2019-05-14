@@ -88,7 +88,58 @@ function buyItem() {
             }
           ])
           .then(answer =>{
-
+            var chosenItem;
+        for (var i = 0; i < results.length; i++) {
+          if (results[i].product_name === answer.choice) {
+            chosenItem = results[i];
+          }
+        }
+        if (chosenItem.stock_quantity > parseInt(answer.amount)) {
+            var newQuantity = chosenItem.stock_quantity - answer.amount;
+            var orderSubTotal = answer.amount * chosenItem.price;
+            var orderTax = (6 / 100) * orderSubTotal
+            var orderTotal = (orderTax + orderSubTotal).toFixed(2);
+            // console.log(orderSubTotal);
+            // console.log(orderTotal);
+            // console.log(chosenItem.stock_quantity);
+            // console.log(newQuantity);
+            connection.query(
+              "UPDATE products SET ? WHERE ?",
+              [
+                {
+                  stock_quantity: newQuantity
+                },
+                {
+                  item_id: chosenItem.item_id
+                }
+              ],
+              function(error) {
+                if (error) throw err;
+                console.log("Order placed successfully!");
+                // start();
+              }
+            );
+          }
+          else {
+           
+            console.log("\nInsufficient Stock. We currently only have: " + chosenItem.stock_quantity);
+            console.log("\n");
+            inquirer.prompt(
+                {
+                    name: "reOrder",
+                    type: "list",
+                    message: "Would you like to change your order?\n".green,
+                    choices: ["Yes", "No, thanks"]
+                }
+            ).then(answer => {
+                if (answer.reOrder === "Yes"){
+                    buyItem();
+                } else {
+                    console.log("\nThats too bad. Have a nice day!\n")
+                    connection.end();
+                }
+            });
+          }
           });
     })
 }
