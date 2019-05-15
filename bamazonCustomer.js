@@ -79,7 +79,7 @@ function buyItem() {
                 }
                 return choiceArray;
               },
-              message: "Which Item would you like to buy?"
+              message: "Which Item would you like to buy?\n"
             },
             {
               name: "amount",
@@ -99,10 +99,7 @@ function buyItem() {
             var orderSubTotal = answer.amount * chosenItem.price;
             var orderTax = (6 / 100) * orderSubTotal
             var orderTotal = (orderTax + orderSubTotal).toFixed(2);
-            // console.log(orderSubTotal);
-            // console.log(orderTotal);
-            // console.log(chosenItem.stock_quantity);
-            // console.log(newQuantity);
+    
             connection.query(
               "UPDATE products SET ? WHERE ?",
               [
@@ -115,14 +112,17 @@ function buyItem() {
               ],
               function(error) {
                 if (error) throw err;
-                console.log("Order placed successfully!");
+                console.log("\nOrder placed successfully!\n".underline.green + "Subtotal: $"
+                 + orderSubTotal + "\nTotal: $" + orderTotal);
+                console.log("\nThank you for shopping with us today!\n".cyan);
+                connection.end();
                 // start();
               }
             );
           }
           else {
            
-            console.log("\nInsufficient Stock. We currently only have: " + chosenItem.stock_quantity);
+            console.log("\nInsufficient Stock. We currently only have: ".red + chosenItem.stock_quantity);
             console.log("\n");
             inquirer.prompt(
                 {
@@ -135,7 +135,7 @@ function buyItem() {
                 if (answer.reOrder === "Yes"){
                     buyItem();
                 } else {
-                    console.log("\nThats too bad. Have a nice day!\n")
+                    console.log("\nSorry for the inconvenience. Have a nice day!\n")
                     connection.end();
                 }
             });
