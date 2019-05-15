@@ -14,4 +14,5 @@ It uses my local mySQL database to hold, display and update information based on
 
 
   *-An example of the mySQL database updating upon a successful order
+      -Take a look at the Coding Rocks! t-shirt stock_quantity updating from 30 to 
   ![](bamazonSQLupdate.gif)
