@@ -7,3 +7,7 @@ It uses my local mySQL database to hold, display and update information based on
 
   *-This is an example of a user making a successful purchase
   -![](bamazonGoodOrder.gif)
+
+
+  *-An example of an unsuccessful order due to insufficient stock
+  .![](bamazonNoStock.gif)
