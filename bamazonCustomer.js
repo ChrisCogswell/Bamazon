@@ -9,6 +9,8 @@ var connection = mysql.createConnection({
     database : 'bamazonDB'
   });
 
+// Establishing connection with mySQL server
+
   connection.connect(err => {
     if (err) {
       console.error('error connecting: ' + err.stack);
@@ -17,8 +19,10 @@ var connection = mysql.createConnection({
    
     console.log("\n--".yellow + " Connected as user: " + connection.threadId + " --\n".yellow);
     welcome();
-    // update();
   });
+
+
+// Function welcoming the customer and prompting them to the storeFront function.
 
   function welcome() {
       inquirer.prompt(
@@ -38,6 +42,7 @@ var connection = mysql.createConnection({
       });
   }
 
+// Storefront function that dislays all products and prompts user for a purchase.  
 
   function storeFront() {
             console.log("\nItems for sale\n".underline.blue)
@@ -63,6 +68,10 @@ var connection = mysql.createConnection({
         }
     });
   }
+
+// Main function that allows user to choose an item and quantity.
+// The user is then shown their order total or if stock is insufficient, prompted to adjust their order.
+// SQL database is updated upon successful order.
 
 function buyItem() {
     connection.query("SELECT * FROM products", function(err, results) {
@@ -116,7 +125,6 @@ function buyItem() {
                  + orderSubTotal + "\nTotal: $" + orderTotal);
                 console.log("\nThank you for shopping with us today!\n".cyan);
                 connection.end();
-                // start();
               }
             );
           }
