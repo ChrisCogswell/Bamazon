@@ -6,13 +6,16 @@ It uses my local mySQL database to hold, display and update information based on
 
 
   *-This is an example of a user making a successful purchase.
+  
   -![](bamazonGoodOrder.gif)
 
 
   *-An example of an unsuccessful order due to insufficient stock.
+  
   .![](bamazonNoStock.gif)
 
 
   *-An example of the mySQL database updating upon a successful order
-      -Take a look at the Coding Rocks! t-shirt stock_quantity updating from 30 to 
+      -Take a look at the Coding Rocks! t-shirt stock_quantity updating from 30 to 26.
+      
   ![](bamazonSQLupdate.gif)
